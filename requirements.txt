@@ -1,0 +1,3 @@
+selenium
+scipy
+fake_useragent
