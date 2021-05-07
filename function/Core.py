@@ -5,44 +5,33 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
 import conf.Constants as constants
 import function.Utils as utils
-import conf.Credentials as credentials
+import conf.Personal as personal
 import function.Init as init
 from python_anticaptcha import AnticaptchaClient, NoCaptchaTaskProxylessTask
+from anticaptchaofficial.recaptchav2proxyless import *
 
 ## VARIABLES
 driver = init.setUpChromeDriver()
 debugBarsAdd = 1
 size = 0,0
+driver.switch_to.default_content()
+driver.get(constants.WAX_WALLET_LOGIN_URL)
 
 ## CORE FUNCTIONS
 
 def preload(): # logs into wax.io
-    driver.switch_to.default_content()
-    driver.get(constants.WAX_WALLET_LOGIN_URL)
     utils.log("Preloading...")
     utils.random_sleeping()
-    while True:
-        utils.log("Clicking Reddit loggin")
-        try:
-            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div/div[9]/button').click()
-            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div[1]/div/div[3]/div[1]/div[9]/button').click()
-            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div[1]/div[9]/button').click()
-            ActionChains(driver).move_by_offset(513, 187).click().perform()
-        except:
-            if driver.current_url.startswith(constants.REDDIT_URL):
-                utils.log("Website is reddit, breaking")
-                break
-            else:
-                time.sleep(0.5)
-        else:
-            break
+    ActionChains(driver).move_by_offset(513, 187).click().perform()
+    ActionChains(driver).move_by_offset(-513, -187).click().perform()
     while True:
         utils.log("Logging in")
         try:
-            driver.find_element_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset[1]/input').send_keys(credentials.REDDIT_USERNAME)
-            driver.find_element_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset[2]/input').send_keys(credentials.REDDIT_PASSWORD)
+            driver.find_element_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset[1]/input').send_keys(personal.REDDIT_USERNAME)
+            driver.find_element_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset[2]/input').send_keys(personal.REDDIT_PASSWORD)
             driver.find_element_by_xpath('/html/body/div/main/div[1]/div/div[2]/form/fieldset[5]/button').click()
         except:
             time.sleep(0.1)
@@ -186,55 +175,52 @@ def get(force = False): # claims reward
     utils.log(f"X, Y = {x}, {y}")
     utils.log(f"Clicking")
     ActionChains(driver).move_by_offset(x, y).click().perform()
-
     utils.random_sleeping()
 
     window_principal = driver.window_handles[0]
     window_popup = driver.window_handles[1]
     driver.switch_to.window(window_popup)
-
     utils.random_sleeping()
-
-    print(driver.current_window_handle)
-    driver.switch_to.default_content()
-    print(driver.current_window_handle)
-
-    WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(
-        (By.CSS_SELECTOR, "iframe[src^='https://www.google.com/recaptcha/api2/anchor']")))
-
-
-    check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor")))
-
-    action = ActionChains(driver)
-    utils.human_like_mouse_move(action, check_box)
-
-    check_box.click()
-
-    utils.random_sleeping()
-
     driver.switch_to.default_content()
 
-    WebDriverWait(driver, 10).until(
-        EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge']")))
-    time.sleep(0.2)
+    # WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(
+    #     (By.CSS_SELECTOR, "iframe[src^='https://www.google.com/recaptcha/api2/anchor']")))
+    #
+    # check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor")))
+    # action = ActionChains(driver)
+    # utils.human_like_mouse_move(action, check_box)
+    # check_box.click()
+    # utils.random_sleeping()
+    # driver.switch_to.default_content()
+    # WebDriverWait(driver, 10).until(
+    #     EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge']")))
+    # time.sleep(0.2)
 
-    #A INSERER ICI
-    site_key = driver.find_element_by_class_name("g-recaptcha").get_attribute("data-sitekey")
-    print("Found site-key", site_key)
-    #WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#recaptcha-audio-button"))).click()
-    #utils.random_sleeping()
+    solver = recaptchaV2Proxyless()
+    solver.set_verbose(1)
+    solver.set_key(personal.ANTICAPTCHA_API_KEY)
+    solver.set_website_url(constants.ANTICAPTCHA_LOGIN_URL)
+    solver.set_website_key(constants.ANTICAPTCHA_SITEKEY)
+    token = driver.execute_script('document.getElementById("recaptcha-token").value')
+    solver.set_website_stoken(token)
 
+    g_response = solver.solve_and_return_solution()
+    print(g_response)
+    utils.random_sleeping()
+    if g_response != 0:
+        print("g-response: " + g_response)
+    else:
+        print("task finished with error " + solver.error_code)
 
-    #END
+    driver.execute_script('document.getElementById("g-recaptcha-response").innerHTML = "%s"' %  g_response)
+    driver.execute_script('___grecaptcha_cfg.clients[0].B.B.callback()')
+    #driver.execute_script('___grecaptcha_cfg.clients[0].B.B.callback({})'.format(g_response))
 
     driver.switch_to.window(window_principal)
-    time.sleep(0.2)
     driver.switch_to.default_content()
-
+    utils.random_sleeping()
     utils.log(f"Backing")
     ActionChains(driver).move_by_offset(-x, -y).click().perform()
-
-
 
 
 def end(force = False): # resets

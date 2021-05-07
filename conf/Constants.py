@@ -1,6 +1,4 @@
 # files path
-CHROME_DRIVER_PATH = "C:/Drivers/chromedriver.exe" # location of your chromedriver
-BRAVE_PATH = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" # location of your Brave browser
 LOGS_PATH = "./log/"
 
 #URLS
@@ -8,6 +6,9 @@ WAX_WALLET_LOGIN_URL = "https://wallet.wax.io/"
 WAX_WALLET_DASHBOARD_URL = "https://wallet.wax.io/dashboard"
 REDDIT_URL = "https://www.reddit.com/"
 ALIENWORD_URL = "https://play.alienworlds.io/"
+# ANTICAPTCHA_LOGIN_URL = "https://all-access.wax.io/cloud-wallet/signing/"
+ANTICAPTCHA_LOGIN_URL = "https://public-wax-on.wax.io/wam/sign"
+ANTICAPTCHA_SITEKEY = "6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF"
 
 ## Sleeping constants
 MIN_RAND = 0.64
@@ -16,7 +17,7 @@ LONG_MIN_RAND = 4.78
 LONG_MAX_RAND = 11.1
 
 LOG_FILE_NAME = "debug.log"
-ALIENABOT_VERSION = "1.2"
+ALIENABOT_VERSION = "1.3"
 DEBUG_RESOLUTION = True
 DEBUG_BARS_ADD = 0
 

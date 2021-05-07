@@ -2,7 +2,9 @@
 from selenium import webdriver
 from selenium.webdriver import DesiredCapabilities
 import conf.Constants as constants
+import conf.Personal as personal
 from random import uniform
+import undetected_chromedriver as uc
 
 def setUpProxy(capabilities):
     index = int(uniform(0, len(constants.PROXIES)))
@@ -15,18 +17,26 @@ def setUpProxy(capabilities):
     }
 
 def setUpChromeDriver():
-    driver = webdriver.Chrome(executable_path=constants.CHROME_DRIVER_PATH, chrome_options=getChromeOptions(),
+    driver = webdriver.Chrome(executable_path=personal.CHROME_DRIVER_PATH, chrome_options=getChromeOptions(),
                               desired_capabilities= getChromeCapabilities())
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     print(driver.execute_script("return navigator.userAgent;"))
     driver.set_window_size(929, 1012)
     return driver
 
+def setUpUndetectedDriver():
+    opts = uc.ChromeOptions()
+    opts.add_extension("./asset/extension/Buster.crx")
+    opts.binary_location = constants.BRAVE_PATH
+    driver = uc.Chrome(options=opts)
+    driver.set_window_size(929, 1012)
+    return driver;
+
 def getChromeOptions():
     option = webdriver.ChromeOptions()
     option.add_argument('log-level=3')
     option.add_argument("start-maximized")
-    option.binary_location = constants.BRAVE_PATH
+    option.binary_location = personal.BRAVE_PATH
     option.add_experimental_option("useAutomationExtension", "true")
     option.add_extension("./asset/extension/Buster.crx")
     option.add_argument('--disable-blink-features=AutomationControlled')
