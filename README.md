@@ -1,5 +1,7 @@
 ---
-##### AlienAutomation was made for educational purposes only, the developers and contributors do not take any responsibility for your WAX.io, AlienWorlds and, or Reddit accounts.
+##### Alienabot was made for educational purposes only, the developers and contributors do not take any responsibility for your WAX.io, AlienWorlds and, or Reddit accounts.
+##### Actually in developpement, based on technical socle [alienworldsauto](https://github.com/anonieX/alienworldsauto)  
+ who doesnt manage captcha; is detected as bot and not work with atual popups
 ---
 
 ### Requirements
