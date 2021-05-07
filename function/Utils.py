@@ -8,8 +8,8 @@ from random import uniform
 from datetime import datetime
 
 def random_sleeping():
-    print(f"Going sleep: waiting {x}s")
     rand = uniform(constants.LONG_MIN_RAND, constants.LONG_MAX_RAND)
+    print(f"Going sleep: waiting {rand}s")
     time.sleep(rand)
 
 def human_like_mouse_move(action, start_element):

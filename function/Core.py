@@ -9,6 +9,7 @@ import conf.Constants as constants
 import function.Utils as utils
 import conf.Credentials as credentials
 import function.Init as init
+from python_anticaptcha import AnticaptchaClient, NoCaptchaTaskProxylessTask
 
 ## VARIABLES
 driver = init.setUpChromeDriver()
@@ -21,12 +22,14 @@ def preload(): # logs into wax.io
     driver.switch_to.default_content()
     driver.get(constants.WAX_WALLET_LOGIN_URL)
     utils.log("Preloading...")
+    utils.random_sleeping()
     while True:
         utils.log("Clicking Reddit loggin")
         try:
-            driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div/div[9]/button').click()
-            driver.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div[1]/div/div[3]/div[1]/div[9]/button').click()
-            driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div[1]/div[9]/button').click()
+            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div/div[9]/button').click()
+            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[1]/div[1]/div/div[3]/div[1]/div[9]/button').click()
+            #driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[4]/div[1]/div[9]/button').click()
+            ActionChains(driver).move_by_offset(513, 187).click().perform()
         except:
             if driver.current_url.startswith(constants.REDDIT_URL):
                 utils.log("Website is reddit, breaking")
@@ -179,7 +182,7 @@ def get(force = False): # claims reward
     x = driver.get_window_size()["width"]/2
     y = driver.get_window_size()["height"]/1.9
     if constants.DEBUG_RESOLUTION == True:
-        x, y = 245, 185
+        x, y = 204, 194
     utils.log(f"X, Y = {x}, {y}")
     utils.log(f"Clicking")
     ActionChains(driver).move_by_offset(x, y).click().perform()
@@ -214,9 +217,15 @@ def get(force = False): # claims reward
     WebDriverWait(driver, 10).until(
         EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge']")))
     time.sleep(0.2)
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#recaptcha-audio-button"))).click()
 
-    utils.random_sleeping()
+    #A INSERER ICI
+    site_key = driver.find_element_by_class_name("g-recaptcha").get_attribute("data-sitekey")
+    print("Found site-key", site_key)
+    #WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#recaptcha-audio-button"))).click()
+    #utils.random_sleeping()
+
+
+    #END
 
     driver.switch_to.window(window_principal)
     time.sleep(0.2)

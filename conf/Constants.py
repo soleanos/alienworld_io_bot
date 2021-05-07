@@ -1,5 +1,5 @@
 # files path
-CHROME_DRIVER_PATH = "C:/Driver/chromedriver.exe" # location of your chromedriver
+CHROME_DRIVER_PATH = "C:/Drivers/chromedriver.exe" # location of your chromedriver
 BRAVE_PATH = "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe" # location of your Brave browser
 LOGS_PATH = "./log/"
 
