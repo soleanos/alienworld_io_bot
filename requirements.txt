@@ -1,5 +1,5 @@
 selenium
 scipy
-python-anticaptcha
 anticaptchaofficial
 undetected_chromedriver
+conf/Personal.py

@@ -10,6 +10,7 @@ import conf.Constants as constants
 import function.Utils as utils
 import conf.Personal as personal
 import function.Init as init
+import function.Captcha as captcha
 from python_anticaptcha import AnticaptchaClient, NoCaptchaTaskProxylessTask
 from anticaptchaofficial.recaptchav2proxyless import *
 
@@ -175,6 +176,8 @@ def get(force = False): # claims reward
     utils.log(f"X, Y = {x}, {y}")
     utils.log(f"Clicking")
     ActionChains(driver).move_by_offset(x, y).click().perform()
+    ActionChains(driver).move_by_offset(-x, -y).click().perform()
+
     utils.random_sleeping()
 
     window_principal = driver.window_handles[0]
@@ -183,44 +186,13 @@ def get(force = False): # claims reward
     utils.random_sleeping()
     driver.switch_to.default_content()
 
-    # WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(
-    #     (By.CSS_SELECTOR, "iframe[src^='https://www.google.com/recaptcha/api2/anchor']")))
-    #
-    # check_box = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "span#recaptcha-anchor")))
-    # action = ActionChains(driver)
-    # utils.human_like_mouse_move(action, check_box)
-    # check_box.click()
-    # utils.random_sleeping()
-    # driver.switch_to.default_content()
-    # WebDriverWait(driver, 10).until(
-    #     EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, "iframe[title='recaptcha challenge']")))
-    # time.sleep(0.2)
+    captcha.solveCaptcha(driver)
 
-    solver = recaptchaV2Proxyless()
-    solver.set_verbose(1)
-    solver.set_key(personal.ANTICAPTCHA_API_KEY)
-    solver.set_website_url(constants.ANTICAPTCHA_LOGIN_URL)
-    solver.set_website_key(constants.ANTICAPTCHA_SITEKEY)
-    token = driver.execute_script('document.getElementById("recaptcha-token").value')
-    solver.set_website_stoken(token)
-
-    g_response = solver.solve_and_return_solution()
-    print(g_response)
-    utils.random_sleeping()
-    if g_response != 0:
-        print("g-response: " + g_response)
-    else:
-        print("task finished with error " + solver.error_code)
-
-    driver.execute_script('document.getElementById("g-recaptcha-response").innerHTML = "%s"' %  g_response)
-    driver.execute_script('___grecaptcha_cfg.clients[0].B.B.callback()')
-    #driver.execute_script('___grecaptcha_cfg.clients[0].B.B.callback({})'.format(g_response))
-
+    utils.log(f"Approving transaction")
+    ActionChains(driver).move_by_offset(299,651 ).click().perform()
+    ActionChains(driver).move_by_offset(-299,-651).click().perform()
     driver.switch_to.window(window_principal)
     driver.switch_to.default_content()
-    utils.random_sleeping()
-    utils.log(f"Backing")
-    ActionChains(driver).move_by_offset(-x, -y).click().perform()
 
 
 def end(force = False): # resets

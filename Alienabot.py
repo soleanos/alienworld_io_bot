@@ -14,9 +14,9 @@ core.end()
 core.wait()
 
 while True:
-    time.sleep(utils.random_sleeping())
+    utils.random_sleeping()
     core.mine(True)
-    time.sleep(utils.random_sleeping()/4)
+    utils.random_sleeping()/4
     core.get(True)
     core.end(True)
     core.wait()

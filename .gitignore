@@ -1,8 +1,8 @@
 # Project
 .idea/
-log/
 log/debug.log
 conf/credential.py
+function/Captcha.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,6 +1,6 @@
 ---
 ##### Alienabot was made for educational purposes only, the developers and contributors do not take any responsibility for your WAX.io, AlienWorlds and, or Reddit accounts.
-##### Actually in developpement, based on technical socle [alienworldsauto](https://github.com/anonieX/alienworldsauto)  
+##### Based on technical socle [alienworldsauto](https://github.com/anonieX/alienworldsauto)  
  who doesnt manage captcha; is detected as bot and not work with atual popups
 ---
 
@@ -17,8 +17,9 @@
 ### Install Python and modules
 *Skip this if you already have Python an the required modules installed*
 1. Install [Python](https://www.python.org/downloads/release/python-378/). 
-2. Open your console using Win+R
-3. Use the command `pip install selenium` to install the lib. If this does not work use `py -3.7 -m pip install selenium`
+2. Go at projet root 
+3. Use Pip install -r requierment.txt, this will install all you need 
+
 ### Config edits
 5. Edit the `reddit_username` and `reddit_password` values in main.py to match your Reddit login
 ### Account creation
@@ -32,6 +33,16 @@
 13. Start the script by running main.py!
 14. Do not resize the window.
 15. Have fun!
+
+
+### For your information
+I don't want this project to be used by too many people and ruin the user experience of the Alienworld site.    
+This is why I will not make available on this repo the latest version of the project which is fully functional,  
+passes the captchas in an undetectable way and transmits notifications on telegram or teams.  
+You can however use the base as I myself used the base of the project  [alienworldsauto](https://github.com/anonieX/alienworldsauto)      
+to develop the missing parts: I left here the links which I used to make the code operational.    
+For your information solution is based on a paid service (about 1 or 2 dollars for 1000 captcha spent)  
+However, i reserve the right to agree to give the missing files to trusted persons who will contact me in exchange of small donation in cryptocurrency.   
 
 ### Sources 
 [bypass with proxy](https://github.com/teal33t/captcha_bypass/blob/12cd04b3a66a11704bc6da610964ffe01fa06856/recaptcha_buster_bypass.py#L98)  

@@ -6,9 +6,8 @@ WAX_WALLET_LOGIN_URL = "https://wallet.wax.io/"
 WAX_WALLET_DASHBOARD_URL = "https://wallet.wax.io/dashboard"
 REDDIT_URL = "https://www.reddit.com/"
 ALIENWORD_URL = "https://play.alienworlds.io/"
-# ANTICAPTCHA_LOGIN_URL = "https://all-access.wax.io/cloud-wallet/signing/"
-ANTICAPTCHA_LOGIN_URL = "https://public-wax-on.wax.io/wam/sign"
-ANTICAPTCHA_SITEKEY = "6LdaB7UUAAAAAD2w3lLYRQJqsoup5BsYXI2ZIpFF"
+ANTICAPTCHA_LOGIN_URL =
+ANTICAPTCHA_SITEKEY =
 
 ## Sleeping constants
 MIN_RAND = 0.64
